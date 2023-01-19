@@ -1,0 +1,19 @@
+<web-app>
+    <servlet>
+        <servlet-name>major</servlet-name>
+        <servlet-class>com.caucho.hessian.server.HessianServlet</servlet-class>
+        <init-param>
+            <param-name>home-class</param-name>
+            <param-value>MajorServiceImpl</param-value>
+        </init-param>
+        <init-param>
+            <param-name>home-api</param-name>
+            <param-value>service.MajorService</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>major</servlet-name>
+        <url-pattern>/major</url-pattern>
+    </servlet-mapping>
+</web-app>
