@@ -45,7 +45,7 @@ public class DatabaseManager {
                     "CREATE TABLE IF NOT EXISTS deadlines " +
                     "(id VARCHAR(60), date DATE NOT NULL, description VARCHAR(255) NOT NULL);" +
                     "CREATE TABLE IF NOT EXISTS clients " +
-                    "(id VARCHAR(60) PRIMARY KEY, login VARCHAR(60) NOT NULL, password VARCHAR(20) NOT NULL);";
+                    "(login VARCHAR(60) PRIMARY KEY, email VARCHAR(60) NOT NULL, password VARCHAR(20) NOT NULL, is_admin BOOLEAN NOT NULL);";
             statement.execute(sql);
             statement.close();
             con.close();

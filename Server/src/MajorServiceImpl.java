@@ -1,3 +1,4 @@
+import data.Client;
 import data.Deadline;
 import data.Major;
 import service.MajorService;
@@ -24,7 +25,6 @@ public class  MajorServiceImpl implements MajorService {
             conn.close();
             return id;
         } catch (SQLException e) {
-            System.out.println("fffffffff");
             throw new RuntimeException(e);
         }
     }
@@ -42,6 +42,22 @@ public class  MajorServiceImpl implements MajorService {
             statement.close();
             conn.close();
             return id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addClient(Client client) {
+        try {
+            Connection conn = DatabaseManager.getInstance().getCon();
+            Statement statement = conn.createStatement();
+            String sql =  "INSERT INTO clients VALUES " +
+                    "(\'" + client.getLogin() + "\', \'" + client.getEmail() + "\', \'" +
+                    client.getPassword() + "\', " + false + ")";
+            statement.execute(sql);
+            statement.close();
+            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -157,6 +173,58 @@ public class  MajorServiceImpl implements MajorService {
             conn.close();
 
             return majors;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Client> getClients() {
+        try {
+            Connection conn = DatabaseManager.getInstance().getCon();
+            Statement statement = conn.createStatement();
+
+            String sql = "SELECT * FROM clients";
+            ResultSet resultSet = statement.executeQuery(sql);
+            ArrayList<Client> clients = new ArrayList<Client>();
+            while (resultSet.next()){
+                Client client = new Client();
+                client.setLogin(resultSet.getString("login"));
+                client.setEmail(resultSet.getString("email"));
+                client.setPassword(resultSet.getString("password"));
+                client.setIs_admin(resultSet.getBoolean("is_admin"));
+
+                clients.add(client);
+            }
+            statement.close();
+            conn.close();
+
+            return clients;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Client getClient(String login, String password) {
+        try {
+            Connection conn = DatabaseManager.getInstance().getCon();
+            Statement statement = conn.createStatement();
+
+            String sql = "SELECT password, is_admin FROM clients where login = '" + login + "'";
+            ResultSet result = statement.executeQuery(sql);
+
+            if (result.next()) {
+                Client client = new Client();
+                client.setPassword(result.getString("password"));
+                client.setIs_admin(result.getBoolean("is_admin"));
+                return client;
+            }
+
+            statement.close();
+            conn.close();
+
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
