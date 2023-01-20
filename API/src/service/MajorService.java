@@ -10,6 +10,7 @@ public interface MajorService {
     String addMajor(Major major);
     String addDeadline(Deadline deadline, String id);
     void addClient(Client client);
+    void delClient(String login);
     void delMajor(String id);
     void delDeadline(String id);
     void changeMajor(Major major);
@@ -18,5 +19,6 @@ public interface MajorService {
     ArrayList<Major> getMajors();
     ArrayList<Client> getClients();
     Client getClient(String login, String password);
+
 
 }
