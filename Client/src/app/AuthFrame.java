@@ -1,32 +1,46 @@
 package app;
 
+import data.Client;
+
 import javax.swing.*;
 
 public class AuthFrame extends JDialog {
-    boolean is_admin;
+    int is_admin = 0;
     public AuthFrame(){
         JTextField login = new JTextField();
         JPasswordField passwordField = new JPasswordField();
         JCheckBox guest = new JCheckBox();
         Object[] message = {
                 "Логин:", login,
-                "Пароль:", passwordField,
-                "Быть гостем:", guest
+                "Пароль:", passwordField
         };
 
-        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            if (login.getText().equals("Dmitry") && passwordField.getText().equals("Leti_1773")){
-                is_admin = true;
-            } else if (guest.isSelected()){
-                is_admin = false;
-            } else{
-               new AuthFrame();
+        Object[] options = {"Войти", "Зарегистрироваться"};
+
+        int option = JOptionPane.showOptionDialog(this,
+                message,
+                "Login",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+        if (option == JOptionPane.OK_OPTION){
+            Client client = ServiceManager.getInstance().getServices().getClient(login.getText(), passwordField.getText());
+            if (client != null && client.getPassword().equals(passwordField.getText())){
+                if (client.isIs_admin()){
+                    is_admin = 1;
+                } else is_admin = 2;
+            } else {
+                new AuthFrame();
             }
+        }
+        if (option == JOptionPane.NO_OPTION){
+            new RegisterFrame();
         }
     }
 
-    boolean getAdmin(){
+    int getAdmin(){
         return is_admin;
     }
 }

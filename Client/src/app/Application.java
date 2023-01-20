@@ -11,12 +11,14 @@ public class Application {
             System.out.println("Error: NimbusLookAndFeel");
         }
         AuthFrame authFrame = new AuthFrame();
-        boolean is_admin = authFrame.is_admin;
+        int is_admin = authFrame.is_admin;
 
-        MainFrame frame = new MainFrame(is_admin);
-        frame.setSize(1200, 800);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        if (is_admin != 0) {
+            MainFrame frame = new MainFrame(is_admin);
+            frame.setSize(1200, 800);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        }
     }
 }

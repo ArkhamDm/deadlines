@@ -2,8 +2,8 @@ package app;
 
 import data.Deadline;
 import data.Major;
-import models.DeadlineList;
-import models.MajorList;
+import app.models.deadline.DeadlineList;
+import app.models.major.MajorList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class MajorsPanel extends JPanel {
-    public MajorsPanel(boolean is_admin) {
+    public MajorsPanel(int is_admin) {
         MajorList majors = new MajorList();
         DeadlineList deadlines = new DeadlineList();
 
@@ -27,7 +27,10 @@ public class MajorsPanel extends JPanel {
         JButton changeDeadlineButton = new JButton("Change Deadline");
 
         //database update
-        majors.getMajorModel().setMajorList(ServiceManager.getInstance().getServices().getMajors());
+        ArrayList<Major> m = ServiceManager.getInstance().getServices().getMajors();
+        for (Major mag: m){
+            majors.getMajorModel().addMajor(mag);
+        }
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -122,7 +125,7 @@ public class MajorsPanel extends JPanel {
                 JTextField date = new JTextField();
                 Object[] message = {
                         "Изменить описание задачи:", description,
-                        "Изменить дату:", date
+                        "Изменить дату: (12-12-2012)", date
                 };
 
                 int option = JOptionPane.showConfirmDialog(null, message, "Change Deadline", JOptionPane.OK_CANCEL_OPTION);
@@ -142,20 +145,21 @@ public class MajorsPanel extends JPanel {
             public void valueChanged(ListSelectionEvent e) {
                 ArrayList<Deadline> empty = new ArrayList<Deadline>();
                 deadlines.getDeadlineModel().setDeadlineList(empty);
+                if (majors.getSelectedValue() != null) {
+                    String id = majors.getSelectedValue().getId();
+                    ArrayList<Deadline> deadline = ServiceManager.getInstance().getServices().getDeadlines(id);
 
-                String id = majors.getSelectedValue().getId();
-                ArrayList<Deadline> deadline = ServiceManager.getInstance().getServices().getDeadlines(id);
+                    for (Deadline dead : deadline) {
+                        deadlines.getDeadlineModel().addDeadline(dead);
+                    }
 
-                for (Deadline dead : deadline){
-                    deadlines.getDeadlineModel().addDeadline(dead);
-                }
+                    if (deadline.isEmpty()) {
+                        Deadline dead = new Deadline();
+                        dead.setDescription("Пока ничего нет");
+                        dead.setDate("NONE");
 
-                if (deadline.isEmpty()){
-                    Deadline dead = new Deadline();
-                    dead.setDescription("Пока ничего нет");
-                    dead.setDate("NONE");
-
-                    deadlines.getDeadlineModel().addDeadline(dead);
+                        deadlines.getDeadlineModel().addDeadline(dead);
+                    }
                 }
             }
         });
@@ -167,7 +171,7 @@ public class MajorsPanel extends JPanel {
         MajorToolBar.add(changeMajorButton);
 
         JPanel leftPanel = new JPanel(new BorderLayout());
-        if (is_admin) leftPanel.add(MajorToolBar, BorderLayout.NORTH);
+        if (is_admin == 1) leftPanel.add(MajorToolBar, BorderLayout.NORTH);
         leftPanel.add(majors, BorderLayout.CENTER);
 
         JToolBar DeadlineToolBar = new JToolBar();
@@ -177,7 +181,7 @@ public class MajorsPanel extends JPanel {
         DeadlineToolBar.add(changeDeadlineButton);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        if (is_admin) rightPanel.add(DeadlineToolBar, BorderLayout.NORTH);
+        if (is_admin == 1) rightPanel.add(DeadlineToolBar, BorderLayout.NORTH);
         rightPanel.add(deadlines, BorderLayout.CENTER);
 
 
