@@ -1,9 +1,9 @@
 Выполнили студенты СПбГЭТУ "ЛЭТИ":  
-import Архипов Дмитрий as dm 
-import Богдан Шевцов as bg
+import Архипов Дмитрий as dm  
+import Богдан Шевцов as bg  
 
-dm.setWord(Back-End);
-bg.setWork(Front-End);
+dm.setWord(Back-End);  
+bg.setWork(Front-End);  
   
 detected:  
 -Toncat-9.0.71  
