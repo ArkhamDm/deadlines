@@ -64,6 +64,22 @@ public class  MajorServiceImpl implements MajorService {
     }
 
     @Override
+    public void delClient(String login) {
+        try {
+            Connection conn = DatabaseManager.getInstance().getCon();
+            Statement statement = conn.createStatement();
+
+            String sql = "DELETE FROM clients WHERE login='" + login + "';";
+            statement.execute(sql);
+            statement.close();
+
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void delMajor(String id) {
         try {
             Connection conn = DatabaseManager.getInstance().getCon();
@@ -116,7 +132,7 @@ public class  MajorServiceImpl implements MajorService {
             Connection conn = DatabaseManager.getInstance().getCon();
             Statement statement = conn.createStatement();
 
-            String sql = "UPDATE deadlines SET name = \'" + deadline.getDate() + "\', is_exam = \'" + deadline.getDescription() + "\'"
+            String sql = "UPDATE deadlines SET date = \'" + deadline.getDate() + "\', description = \'" + deadline.getDescription() + "\'"
                     + " where id = " + "\'" + deadline.getId() + "\'";
             statement.execute(sql);
             statement.close();
