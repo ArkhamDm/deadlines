@@ -43,7 +43,9 @@ public class DatabaseManager {
             String sql = "CREATE TABLE IF NOT EXISTS majors " +
                     "(id VARCHAR(60) PRIMARY KEY, name VARCHAR(60) NOT NULL, is_exam BOOLEAN NOT NULL);" +
                     "CREATE TABLE IF NOT EXISTS deadlines " +
-                    "(id VARCHAR(60), date DATE NOT NULL, description VARCHAR(255) NOT NULL);";
+                    "(id VARCHAR(60), date DATE NOT NULL, description VARCHAR(255) NOT NULL);" +
+                    "CREATE TABLE IF NOT EXISTS clients " +
+                    "(id VARCHAR(60) PRIMARY KEY, login VARCHAR(60) NOT NULL, password VARCHAR(20) NOT NULL);";
             statement.execute(sql);
             statement.close();
             con.close();
