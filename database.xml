@@ -1,0 +1,7 @@
+<DatabaseConf>
+  <host>127.0.0.1</host>
+  <port>1234</port>
+  <base>Deadlines</base>
+  <login>postgres</login>
+  <password>Leti_1773</password>
+</DatabaseConf>
