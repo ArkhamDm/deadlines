@@ -2,7 +2,7 @@
 import Архипов Дмитрий as dm  
 import Богдан Шевцов as bg  
 
-dm.setWord(Back-End);  
+dm.setWork(Back-End);  
 bg.setWork(Front-End);  
   
 detected:  
